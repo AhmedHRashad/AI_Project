@@ -1,1 +1,31 @@
-this is the backtracking algorithm
+N = int(input("Enter dimension of the board (N):"))
+#initialize board with zeros with same dimensions of N.
+board = [[0]*N for _ in range(N)]
+def is_attack(i, j):
+    #if queen is being attacked in the same row or column
+    for k in range(0,N):
+        if board[i][k]==1 or board[k][j]==1:
+            return True #it is being attacked
+    #checking diagonals
+    for k in range(0,N):
+        for l in range(0,N):
+            if (k+l==i+j) or (k-l==i-j):
+                if board[k][l]==1:
+                    return True #it is being attacked
+    return False # it not being attacked and can a queen can be put there
+def N_queen(n):
+    if n==0:
+        return True # we found the safe sequence and can return the result
+    for i in range(0,N):
+        for j in range(0,N):
+            if (not(is_attack(i,j))) and (board[i][j]!=1):
+                board[i][j] = 1
+                #recursion
+                #wether we can put the next queen with this arrangment or not
+                if N_queen(n-1)==True:
+                    return True # this sequence is safe and can continue to the next
+                board[i][j] = 0
+    return False #the loop is finished and this sequence is not safe and must backtrack
+N_queen(N)
+for i in board: #print the board each row under each other
+    print (i)
